@@ -16,6 +16,9 @@
     <div id="container">
         <div id="content">
 
+            <!-- Put new button -->
+            <input type="button" value="Add Customer" onclick="window.location.href='showFormForAdd'; return false;">
+
             <!-- Add our html table here -->
 
             <table>
@@ -23,15 +26,31 @@
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Email</th>
+                    <th>Action</th>
                 </tr>
 
                 <!-- loop over and print our customers -->
                 <c:forEach var="tempCustomer" items="${customers}">
 
+                    <!-- construct an "update" link with customer id -->
+                    <c:url var="updatelink" value="/customer/showFormForUpdate">
+                        <c:param name="customerId" value="${tempCustomer.id}" />
+                    </c:url>
+
+                    <!-- construct a "delete" link with customer id -->
+                    <c:url var="deletelink" value="/customer/delete">
+                        <c:param name="customerId" value="${tempCustomer.id}" />
+                    </c:url>
+
                     <tr>
                         <td> ${tempCustomer.firstName} </td>
                         <td> ${tempCustomer.lastName} </td>
                         <td> ${tempCustomer.email} </td>
+                        <td>
+                            <a href="${updatelink}">Update</a>
+                            |
+                            <a href="${deletelink}" onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false">Delete</a>
+                        </td>
                     </tr>
 
                 </c:forEach>
